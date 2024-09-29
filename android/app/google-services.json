@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "781724808430",
+    "project_id": "shoutout-app-b7c4f",
+    "storage_bucket": "shoutout-app-b7c4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781724808430:android:bfc746b14f4804488b6fff",
+        "android_client_info": {
+          "package_name": "com.shoutout.shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFqoVzMUpU6Pw66lGybl_TtVUxfw-OTHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

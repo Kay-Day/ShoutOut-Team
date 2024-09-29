@@ -1,7 +1,18 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Platform.isAndroid?await Firebase.initializeApp(options: const FirebaseOptions(
+  apiKey: 'AIzaSyCFqoVzMUpU6Pw66lGybl_TtVUxfw-OTHI', 
+  appId: '1:781724808430:android:bfc746b14f4804488b6fff', 
+  messagingSenderId: '781724808430', 
+  projectId: 'shoutout-app-b7c4f', storageBucket: 'gs://shoutout-app-b7c4f.appspot.com'),
+  )
+  :await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
