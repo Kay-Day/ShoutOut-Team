@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shoutout_shop_app/controllers/auth_controller.dart';
 import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
+  final AuthController _authController = AuthController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 
@@ -26,6 +29,24 @@ class RegisterScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
               letterSpacing: 1,
             ),
+          ),
+          SizedBox(height: 15,),
+          Stack(
+            children: [
+                CircleAvatar(
+            radius: 65,
+            child: Icon(Icons.person,
+            size: 70,),
+          ),
+
+          Positioned(
+            right: 0,
+            top: 15,
+            child: Icon(
+              CupertinoIcons.photo,
+             ))
+
+            ],
           ),
           SizedBox(
             height: 20,
@@ -102,9 +123,8 @@ class RegisterScreen extends StatelessWidget {
           InkWell(
             onTap: () {
               if (_formKey.currentState!.validate()){
-                print(email);
-                print(fullName);
-                print(passWord);
+                _authController.createNewUser(email, fullName, passWord);
+                print('Thành công');
               }else {
                 print('Not Valid');
 
