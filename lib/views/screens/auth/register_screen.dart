@@ -41,6 +41,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  registerUser()async{
+    if(_image!=null){
+         if (_formKey.currentState!.validate()) {
+                  String res = await  _authController.createNewUser(email, fullName, passWord,_image);
+                  if(res=='Thành công!'){
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return LoginScreen();
+                    }));
+                  }
+                   
+
+
+                  } else {
+                    print('Not Valid');
+                  }
+
+    }else{
+      print('Khong co anh ');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,12 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               InkWell(
                 onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    _authController.createNewUser(email, fullName, passWord,_image);
-                    print('Thành công');
-                  } else {
-                    print('Not Valid');
-                  }
+                  registerUser();
                 },
                 child: Container(
                   height: 50,

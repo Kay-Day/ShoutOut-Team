@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shoutout_shop_app/controllers/auth_controller.dart';
 import 'package:shoutout_shop_app/views/screens/auth/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -7,11 +8,25 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+   final AuthController _authController = AuthController();
+
    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
    late String email;
 
    late String passWord;
+
+   loginUser()async{
+    if(_formKey.currentState!.validate()){
+     String res = await _authController.loginUser(email, passWord);
+     if(res == 'Thành công!'){
+      print('Đăng nhập thành công');
+
+     }
+
+    }
+
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           InkWell(
             onTap: () {
-              if (_formKey.currentState!.validate()){
-                print("Đăng nhập thành công");
-                print(email);
-                print(passWord);
-
-              }else {
-                print('Đăng nhập không thành công');
-              }
+               loginUser();
             },
             child: Container(
               height: 50,
