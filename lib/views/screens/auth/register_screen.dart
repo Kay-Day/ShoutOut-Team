@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shoutout_shop_app/controllers/auth_controller.dart';
 import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
@@ -45,20 +46,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if(_image!=null){
          if (_formKey.currentState!.validate()) {
                   String res = await  _authController.createNewUser(email, fullName, passWord,_image);
-                  if(res=='Thành công!'){
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return LoginScreen();
-                    }));
+                  if(res=='success'){
+                   Get.to(LoginScreen());
+
+                    Get.snackbar('Thành công ','Bạn đã tạo tài khoản thành công !',backgroundColor: const Color.fromARGB(255, 246, 109, 12),colorText: Colors.white, margin: EdgeInsets.all(15),);
+                  }else{
+                    Get.snackbar('Lỗi ', res.toString(), backgroundColor: Colors.red, colorText: Colors.white,snackPosition: SnackPosition.BOTTOM,margin: EdgeInsets.all(15),);
                   }
                    
-
-
                   } else {
-                    print('Not Valid');
+                    Get.snackbar('Thông tin', 'Điền thông tin không hợp lệ', backgroundColor: Colors.red, colorText: Colors.white,margin: EdgeInsets.all(15),icon: Icon(Icons.message,color: Colors.white,));
                   }
 
     }else{
-      print('Khong co anh ');
+      Get.snackbar('Không hình ảnh', 'Vui lòng chọn ảnh', backgroundColor: Colors.red, colorText: Colors.white,snackPosition: SnackPosition.BOTTOM,margin: EdgeInsets.all(15),icon: Icon(Icons.message,color: Colors.white,));
     }
   }
 

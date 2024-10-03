@@ -27,7 +27,7 @@ class AuthController {
         'buyerID': userCredential.user!.uid,
       });
 
-      res = 'Thành công!';
+      res = 'success';
     } catch (e) {
       res = e.toString();
     }
@@ -59,7 +59,7 @@ class AuthController {
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: passWord);
-      res = 'Đăng nhập thành công!';
+      res = 'success';
     } catch (e) {
       res = e.toString();
     }
