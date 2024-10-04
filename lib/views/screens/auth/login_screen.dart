@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_responsive.dart';
 import 'package:shoutout_shop_app/controllers/auth_controller.dart';
 import 'package:shoutout_shop_app/views/screens/auth/register_screen.dart';
+import 'package:shoutout_shop_app/views/screens/map_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -34,6 +35,7 @@ loginUser() async {
       setState(() {
         _isLoading = false;
       });
+      Get.to(MapScreen());
       Get.snackbar('Đăng nhập', 'Bạn đã đăng nhập',backgroundColor: const Color.fromARGB(255, 21, 150, 6),colorText: Colors.white,);
     }else{
       Get.snackbar('Lỗi', res.toString(), backgroundColor: Colors.red, colorText: Colors.white,snackPosition: SnackPosition.BOTTOM,);
