@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shoutout_shop_app/controllers/auth_controller.dart';
 import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
 
-
 class RegisterScreen extends StatefulWidget {
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -19,6 +18,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool _isLoading = false;
+
   late String email;
 
   late String fullName;
@@ -28,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Uint8List? _image;
 
   selectGalleryImage() async {
-    Uint8List im =  await _authController.pickProfileImage(ImageSource.gallery);
+    Uint8List im = await _authController.pickProfileImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
@@ -42,24 +43,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  registerUser()async{
-    if(_image!=null){
-         if (_formKey.currentState!.validate()) {
-                  String res = await  _authController.createNewUser(email, fullName, passWord,_image);
-                  if(res=='success'){
-                   Get.to(LoginScreen());
+  registerUser() async {
+    if (_image != null) {
+      if (_formKey.currentState!.validate()) {
+         setState(() {
+      _isLoading = true;
+    });
+        String res = await _authController.createNewUser(
+            email, fullName, passWord, _image);
+            setState(() {
+              _isLoading = false;
+            });
+        if (res == 'success') {
+          setState(() {
+            _isLoading = false;
+          });
+          Get.to(LoginScreen());
 
-                    Get.snackbar('Thành công ','Bạn đã tạo tài khoản thành công !',backgroundColor: const Color.fromARGB(255, 246, 109, 12),colorText: Colors.white, margin: EdgeInsets.all(15),);
-                  }else{
-                    Get.snackbar('Lỗi ', res.toString(), backgroundColor: Colors.red, colorText: Colors.white,snackPosition: SnackPosition.BOTTOM,margin: EdgeInsets.all(15),);
-                  }
-                   
-                  } else {
-                    Get.snackbar('Thông tin', 'Điền thông tin không hợp lệ', backgroundColor: Colors.red, colorText: Colors.white,margin: EdgeInsets.all(15),icon: Icon(Icons.message,color: Colors.white,));
-                  }
-
-    }else{
-      Get.snackbar('Không hình ảnh', 'Vui lòng chọn ảnh', backgroundColor: Colors.red, colorText: Colors.white,snackPosition: SnackPosition.BOTTOM,margin: EdgeInsets.all(15),icon: Icon(Icons.message,color: Colors.white,));
+          Get.snackbar(
+            'Thành công ',
+            'Bạn đã tạo tài khoản thành công !',
+            backgroundColor: const Color.fromARGB(255, 246, 109, 12),
+            colorText: Colors.white,
+            margin: EdgeInsets.all(15),
+          );
+        } else {
+          Get.snackbar(
+            'Lỗi ',
+            res.toString(),
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.all(15),
+          );
+        }
+      } else {
+        Get.snackbar('Thông tin', 'Điền thông tin không hợp lệ',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            margin: EdgeInsets.all(15),
+            icon: Icon(
+              Icons.message,
+              color: Colors.white,
+            ));
+      }
+    } else {
+      Get.snackbar('Không hình ảnh', 'Vui lòng chọn ảnh',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.all(15),
+          icon: Icon(
+            Icons.message,
+            color: Colors.white,
+          ));
     }
   }
 
@@ -86,16 +123,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               Stack(
                 children: [
-                 _image==null? CircleAvatar(
-                    radius: 65,
-                    child: Icon(
-                      Icons.person,
-                      size: 80,
-                    ),
-                  ):CircleAvatar(
-                    radius: 65,
-                    backgroundImage: MemoryImage(_image!),
-                  ),
+                  _image == null
+                      ? CircleAvatar(
+                          radius: 65,
+                          child: Icon(
+                            Icons.person,
+                            size: 80,
+                          ),
+                        )
+                      : CircleAvatar(
+                          radius: 65,
+                          backgroundImage: MemoryImage(_image!),
+                        ),
                   Positioned(
                     right: 0,
                     top: 15,
@@ -195,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   child: Center(
-                      child: Text(
+                      child: _isLoading? CircularProgressIndicator(color: Colors.white,): Text(
                     'Đăng ký',
                     style: TextStyle(
                       fontSize: 18,

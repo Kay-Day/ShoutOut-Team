@@ -19,10 +19,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
    late String passWord;
 
+   bool _isLoading = false;
+
 loginUser() async {
   if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;
+    });
     String res = await _authController.loginUser(email, passWord);
+    setState(() {
+      _isLoading = false;
+    });
     if (res == 'success') {
+      setState(() {
+        _isLoading = false;
+      });
       Get.snackbar('Đăng nhập', 'Bạn đã đăng nhập',backgroundColor: const Color.fromARGB(255, 21, 150, 6),colorText: Colors.white,);
     }else{
       Get.snackbar('Lỗi', res.toString(), backgroundColor: Colors.red, colorText: Colors.white,snackPosition: SnackPosition.BOTTOM,);
@@ -105,7 +116,7 @@ loginUser() async {
                     10,
                   )),
               child: Center(
-                child: Text(
+                child: _isLoading? CircularProgressIndicator(color: Colors.white,): Text(
                   'Đăng nhập',
                   style: TextStyle(
                       color: Colors.white,
