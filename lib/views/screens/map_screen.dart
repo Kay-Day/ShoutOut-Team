@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class _MapScreenState extends State<MapScreen> {
    final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
+     late GoogleMapController mapController;
+
   static const CameraPosition _kHanoi = CameraPosition(
   // bearing: 192.8334901395799,
   target: LatLng(21.028511, 105.804817), // Tọa độ Hà Nội
@@ -23,17 +26,40 @@ class _MapScreenState extends State<MapScreen> {
   zoom: 14.4746
 );
 
+late Position currentPosition;
+
+getUserCurrentLocation()async{
+  await Geolocator.checkPermission();
+
+  await Geolocator.requestPermission();
+
+  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation, forceAndroidLocationManager: true);
+
+  currentPosition = position;
+
+  LatLng pos = LatLng(position.latitude, position.longitude);
+  CameraPosition cameraPosition = CameraPosition(target: pos, zoom: 16);
+  mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           GoogleMap(
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,
             padding: EdgeInsets.only(bottom: 200),
             mapType: MapType.normal,
             initialCameraPosition: _kHanoi ,
             onMapCreated: (GoogleMapController controller){
               _controller.complete(controller);
+
+              mapController = controller;
+
+              getUserCurrentLocation();
             },
           ),
           Positioned(
