@@ -4,7 +4,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shoutout_shop_app/views/screens/home_screen.dart';
+import 'package:shoutout_shop_app/views/screens/main_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -77,6 +80,7 @@ getUserCurrentLocation()async{
                   Container(
                     width: MediaQuery.of(context).size.width -70,
                     child: ElevatedButton.icon(onPressed: (){
+                      Get.offAll(MainScreen());
 
                     },icon: Icon(CupertinoIcons.shopping_cart) ,label: Text('Mua ngay',style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: 1,)),),
                   ),
