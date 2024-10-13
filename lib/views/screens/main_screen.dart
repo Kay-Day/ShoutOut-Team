@@ -62,10 +62,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: Image.asset('assets/icons/lover.png',width: 20,),
             label: 'Yêu thích',
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/product.png',width: 20,),
-            label: 'Tìm kiếm',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Image.asset('assets/icons/product.png',width: 20,),
+          //   label: 'Tìm kiếm',
+          // ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset('assets/icons/account.svg'),
             label: 'Tài khoản',
