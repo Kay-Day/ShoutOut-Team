@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shoutout_shop_app/views/screens/inner_screens/category_products.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -60,31 +61,39 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     crossAxisCount: 2, mainAxisSpacing: 8, crossAxisSpacing: 8),
                 itemBuilder: (context, index) {
                   final categoryData = snapshot.data!.docs[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          )
-                        ],),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.network(categoryData['image'],
-                            width: 80,
-                            height: 80,
-                            ),
-                            SizedBox(height: 10,),
-                            Text(categoryData['categoryName'].toUpperCase(),
-                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,),
-                            )
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return CategoryProductScreen(categoryData: categoryData,);
 
-                          ],
-                        ),
+                      }));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              blurRadius: 4,
+                              offset: Offset(0, 2),
+                            )
+                          ],),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(categoryData['image'],
+                              width: 80,
+                              height: 80,
+                              ),
+                              SizedBox(height: 10,),
+                              Text(categoryData['categoryName'].toUpperCase(),
+                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,),
+                              )
+                    
+                            ],
+                          ),
+                    ),
                   );
                 }),
           );
