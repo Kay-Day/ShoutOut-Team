@@ -46,6 +46,7 @@ dependencies:
   geolocator: ^13.0.1
   flutter_svg: ^2.0.10+1
   carousel_slider: ^5.0.0
+  flutter_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:
