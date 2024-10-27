@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoutout_shop_app/provider/cart_provider.dart';
+import 'package:shoutout_shop_app/provider/selected_size_provider.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final dynamic productData;
@@ -16,6 +17,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   int _imageIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final selectedSize = ref.watch(selectedSizeProvider);
     final _cartProvider = ref.read(cartProvider.notifier);
     final cartItem = ref.watch(cartProvider);
     final isInCart = cartItem.containsKey(widget.productData['productId']);
@@ -158,7 +160,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    final newSelected =
+                                        widget.productData['sizeList'][index];
+
+                                    ref
+                                        .read(selectedSizeProvider.notifier)
+                                        .setSelectedSize(newSelected);
+                                  },
                                   child: Text(
                                       widget.productData['sizeList'][index])),
                             );
@@ -201,22 +210,26 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       bottomSheet: BottomAppBar(
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           InkWell(
-            onTap: isInCart? null: () {
-              _cartProvider.addProductToCart(
-                  widget.productData['productName'],
-                  widget.productData['productId'],
-                  widget.productData['imageUrl'],
-                  1,
-                  widget.productData['productQuantity'],
-                  widget.productData['productPrice'],
-                  widget.productData['vendorId'],
-                  'XL');
+            onTap: isInCart
+                ? null
+                : () {
+                    _cartProvider.addProductToCart(
+                        widget.productData['productName'],
+                        widget.productData['productId'],
+                        widget.productData['imageUrl'],
+                        1,
+                        widget.productData['productQuantity'],
+                        widget.productData['productPrice'],
+                        widget.productData['vendorId'],
+                        selectedSize);
 
-               print(_cartProvider.getCartItems.values.first.productName);
-            },
+                    print(_cartProvider.getCartItems.values.first.productName);
+                  },
             child: Container(
               decoration: BoxDecoration(
-                color: isInCart? const Color.fromARGB(200, 231, 45, 45) : const Color.fromARGB(180, 243, 97, 19),
+                color: isInCart
+                    ? const Color.fromARGB(200, 231, 45, 45)
+                    : const Color.fromARGB(180, 243, 97, 19),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Padding(
@@ -227,8 +240,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       CupertinoIcons.shopping_cart,
                       color: Colors.white,
                     ),
-                    Text(isInCart? "Trong giỏ hàng" :
-                      'Thêm vào giỏ hàng',
+                    Text(
+                      isInCart ? "Trong giỏ hàng" : 'Thêm vào giỏ hàng',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,

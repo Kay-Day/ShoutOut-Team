@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shoutout_shop_app/provider/favorite_provider.dart';
 import 'package:shoutout_shop_app/views/screens/inner_screens/product_detail_screen.dart';
 
-class ProductModel extends StatelessWidget {
+class ProductModel extends ConsumerStatefulWidget {
   const ProductModel({
     super.key,
     required this.prouctData,
@@ -11,11 +13,18 @@ class ProductModel extends StatelessWidget {
   final QueryDocumentSnapshot<Object?> prouctData;
 
   @override
+  _ProductModelState createState() => _ProductModelState();
+}
+
+class _ProductModelState extends ConsumerState<ProductModel> {
+  @override
   Widget build(BuildContext context) {
+    final _favoriteProvider = ref.read(favoriteProvider.notifier);
+    ref.watch(favoriteProvider);
     return GestureDetector(
       onTap: (){
         Navigator.push(context,MaterialPageRoute(builder: (context){
-          return ProductDetailScreen(productData: prouctData,);
+          return ProductDetailScreen(productData: widget.prouctData,);
 
         }));
       },
@@ -46,7 +55,7 @@ class ProductModel extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        prouctData['imageUrl'][0],
+                        widget.prouctData['imageUrl'][0],
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -60,7 +69,7 @@ class ProductModel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        prouctData['productName'],
+                        widget.prouctData['productName'],
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -75,7 +84,7 @@ class ProductModel extends StatelessWidget {
                       ),
                       Text(
                        
-                        prouctData['productPrice']
+                        widget.prouctData['productPrice']
                             .toStringAsFixed(3)
                             + " \VND",
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 240, 27, 12))
@@ -85,7 +94,25 @@ class ProductModel extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          Positioned(
+            right: 15,
+            top: 15,
+            child: IconButton(onPressed: (){
+              _favoriteProvider.addProductToFavorite(
+                        widget.prouctData['productName'], 
+                        widget.prouctData['productId'],
+                        widget.prouctData['imageUrl'],
+                        1,
+                        widget.prouctData['productQuantity'],
+                        widget.prouctData['productPrice'],
+                        widget.prouctData['vendorId'],
+                        );
+            }, icon: _favoriteProvider.getFavoriteItem.containsKey(widget.prouctData['productId'])? Icon(
+              Icons.favorite,color: Colors.red,
+              ):Icon(Icons.favorite_border, color: Colors.red,),
+              ),
+              ),
         ],
       ),
     );
