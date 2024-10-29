@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoutout_shop_app/provider/cart_provider.dart';
+import 'package:shoutout_shop_app/views/screens/inner_screens/checkout_screen.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -37,7 +38,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           ),
         ],
       ),
-      body:cartData.isNotEmpty? ListView.builder(
+      body:cartData.isNotEmpty? 
+      ListView.builder(
           itemCount: cartData.length,
           itemBuilder: (context, index) {
             final cartItem = cartData.values.toList()[index];
@@ -135,7 +137,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     ),
                   ),
                 ));
-          }):Center(
+          },)
+          :Center(
               child: Column(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
@@ -174,7 +177,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       fontWeight: FontWeight.bold,
                     ),),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                     Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return CheckoutScreen();
+                      }));
+                  },
                   child: Text(
                     'Thanh toán', style: TextStyle(
                         fontSize: 18,
