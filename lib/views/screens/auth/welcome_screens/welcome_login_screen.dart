@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shoutout_shop_app/views/screens/auth/register_screen.dart';
-import 'package:shoutout_shop_app/views/screens/auth/welcome_screens/welcome_login_screen.dart';
+import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
+import 'package:shoutout_shop_app/views/screens/auth/welcome_screens/welcome_register_screen.dart';
 
-class WelcomeRegisterScreen extends StatefulWidget {
-  const WelcomeRegisterScreen({super.key});
+class WelcomeLoginScreen extends StatefulWidget {
+  const WelcomeLoginScreen({super.key});
 
   @override
-  State<WelcomeRegisterScreen> createState() => _WelcomeRegisterScreenState();
+  State<WelcomeLoginScreen> createState() => _WelcomeLoginScreenState();
 }
 
-class _WelcomeRegisterScreenState extends State<WelcomeRegisterScreen> {
+class _WelcomeLoginScreenState extends State<WelcomeLoginScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -37,7 +37,7 @@ class _WelcomeRegisterScreenState extends State<WelcomeRegisterScreen> {
                 fit: BoxFit.contain,
               ),
             ),
-             Positioned(
+            Positioned(
               left: screenWidth * 0.024,
               top: screenHeight * 0.151,
               child: Image.asset('assets/icons/Illustration.png'),
@@ -48,7 +48,7 @@ class _WelcomeRegisterScreenState extends State<WelcomeRegisterScreen> {
               child: InkWell(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return CustomerRegisterScreen();
+                    return CustomerLoginScreen();
                   }));
                 },
                 child: Container(
@@ -59,7 +59,7 @@ class _WelcomeRegisterScreenState extends State<WelcomeRegisterScreen> {
                     color: Colors.white,
                   ),
                   child: Center(
-                      child: Text('Đăng ký khách hàng',
+                      child: Text('Đăng nhập khách hàng',
                           style: TextStyle(
                             fontSize: screenHeight * 0.022,
                             fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class _WelcomeRegisterScreenState extends State<WelcomeRegisterScreen> {
                 ),
                 child: Center(
                   child: Text(
-                    'Đăng ký người bán hàng ',
+                    'Đăng nhập người bán hàng ',
                     style: TextStyle(
                         fontSize: screenHeight * 0.022,
                         fontWeight: FontWeight.bold),
@@ -93,21 +93,24 @@ class _WelcomeRegisterScreenState extends State<WelcomeRegisterScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Bạn đã có tài khoản ?',
+                      'Bạn chưa có tài khoản ?',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: screenWidth * 0.022,),
+                    SizedBox(
+                      width: screenWidth * 0.022,
+                    ),
                     InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return WelcomeLoginScreen();
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return WelcomeRegisterScreen();
                         }));
                       },
                       child: Text(
-                        'Đăng nhập',
+                        'Đăng ký tài khoản',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

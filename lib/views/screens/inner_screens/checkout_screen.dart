@@ -116,6 +116,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   'productSize' : item.productSize,
                   'productImage': item.imageUrl,
                   'vendorQuantity': item.productQuantity,
+                  'accepted': false,
+                  'orderDate': DateTime.now(),
+
 
                 }).whenComplete((){
                   setState(() {

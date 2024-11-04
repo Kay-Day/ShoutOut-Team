@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoutout_shop_app/provider/cart_provider.dart';
 import 'package:shoutout_shop_app/views/screens/inner_screens/checkout_screen.dart';
+import 'package:shoutout_shop_app/views/screens/inner_screens/payment_screen.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -180,7 +181,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   onPressed: () {
                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return CheckoutScreen();
+                        return PaymentScreen();
                       }));
                   },
                   child: Text(

@@ -1,7 +1,9 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class BannerWidget extends StatefulWidget {
   const BannerWidget({super.key});
@@ -45,15 +47,18 @@ class _BannerWidgetState extends State<BannerWidget> {
         enlargeCenterPage: true,
         scrollDirection: Axis.horizontal,
       ),
-      items: _bannerImage.map((i) {
+      items: _bannerImage.map((e) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
                 width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  i,
-                  fit: BoxFit.cover,
-                ));
+                child: CachedNetworkImage(
+        imageUrl: e,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+     ),
+                );
           },
         );
       }).toList(),

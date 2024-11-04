@@ -1,87 +1,68 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shoutout_shop_app/views/screens/category.Screen.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:shoutout_shop_app/controllers/categories_controller.dart';
 
-class CategoryTextWidget extends StatefulWidget {
-  const CategoryTextWidget({super.key});
+class CategoryItemWidget extends StatelessWidget {
+  const CategoryItemWidget({super.key});
 
-  @override
-  State<CategoryTextWidget> createState() => _CategoryTextWidgetState();
-}
-
-class _CategoryTextWidgetState extends State<CategoryTextWidget> {
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _categoryStream =
-        FirebaseFirestore.instance.collection('categories').snapshots();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
+    final CategoryController _categoryController =
+        Get.find<CategoryController>();
+    return Obx(() {
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Danh mục',
-            style: TextStyle(
-              fontSize: 20,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Danh mục',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Xem tất cả',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
-          StreamBuilder<QuerySnapshot>(
-            stream: _categoryStream,
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading danh mục ");
-              }
-
-              return Container(
-                height: 40,
-                child: Row(
+          GridView.builder(
+            itemCount: _categoryController.categories.length,
+            shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, crossAxisSpacing: 8, mainAxisSpacing: 8),
+              itemBuilder: (context, index) {
+                return Column(
                   children: [
-                    Expanded(
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                      final categoryData = snapshot.data!.docs[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ActionChip(
-                          onPressed: (){
-                            
-                          },
-                            backgroundColor: const Color.fromARGB(255, 238, 242, 242),
-                            label: Center(
-                          child: Text(categoryData['categoryName'].toUpperCase(), style: TextStyle(
-                                      color: const Color.fromARGB(255, 243, 88, 61),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),),
-                        ),),
-                      );
-                    },
+                    Container(
+                      width: MediaQuery.of(context).size.width *0.18,
+                      height: MediaQuery.of(context).size.width*0.18,
+
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.width * 0.18/2,
+                        ) ,
+                        border: Border.all(color: Colors.grey,),
+                      ),
+                      child: Image.network(
+                        _categoryController.categories[index].categoryImage,
+                        // fit: BoxFit.cover,
+                      ),
                     ),
-                    ),
-                    IconButton(
-                       onPressed: () {
-                        Get.to(CategoryScreen());
-                      },
-                       icon: Icon(Icons.arrow_forward_ios),
-                    )
+                    Text(_categoryController.categories[index].categoryName.toUpperCase(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+
                   ],
-                ),
+                );
 
-
-                
-              );
-            },
-          ),
+              })
         ],
-      ),
-    );
+      );
+    });
   }
 }

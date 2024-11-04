@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
+import 'package:shoutout_shop_app/views/screens/inner_screens/customer_order_screen.dart';
 
 class AccountScreen extends StatelessWidget {
    final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,7 +18,7 @@ class AccountScreen extends StatelessWidget {
           elevation: 2,
           // backgroundColor: Colors.pink.shade900,
           title: Text(
-            'Profile',
+            'Thông tin',
             style: TextStyle(fontSize: 20, letterSpacing: 1),
           ),
           actions: [
@@ -86,7 +87,7 @@ class AccountScreen extends StatelessWidget {
               width: 200,
                child: ElevatedButton(onPressed: (){
                
-               }, child: Text('Edit Profile'),
+               }, child: Text('Chỉnh sửa thông tin'),
                ),
              ),
            ),
@@ -96,35 +97,38 @@ class AccountScreen extends StatelessWidget {
            ),
             ListTile(
                         leading: Icon(Icons.settings),
-                        title: Text('Settings'),
+                        title: Text('Cài đặt'),
                       ),
              ListTile(
                         leading: Icon(Icons.phone),
-                        title: Text('Phone'),
+                        title: Text('Số điện thoại'),
                         subtitle: Text('0905456456'),
                       ),
              ListTile(
                         leading: Icon(Icons.shop),
-                        title: Text('Cart'),
+                        title: Text('Giỏ hàng'),
                       ),
               ListTile(
                         onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                            return CustomerOrderScreen();
+                          }));
                          
                         },
                         leading: Icon(CupertinoIcons.shopping_cart),
-                        title: Text('Order'),
+                        title: Text('Đơn hàng'),
                       ),
               ListTile(
                         onTap: () async {
                            await _auth.signOut().whenComplete(() {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return LoginScreen();
+                              return CustomerLoginScreen();
                             }));
                           });
                         },
                         leading: Icon(Icons.logout),
-                        title: Text('Logout',style: TextStyle(
+                        title: Text('Đăng xuất',style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.orange,
                         ),),

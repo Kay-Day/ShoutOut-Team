@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 10,
           ),
-          CategoryTextWidget(),
+          CategoryItemWidget(),
            SizedBox(
               height: 10,
             ),
