@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoutout_shop_app/provider/cart_provider.dart';
 import 'package:shoutout_shop_app/provider/selected_size_provider.dart';
+import 'package:shoutout_shop_app/views/screens/inner_screens/chat_screen.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final dynamic productData;
@@ -254,7 +256,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return ChatScreen(
+                  sellerId: widget.productData['vendorId'],
+                  buyerId: FirebaseAuth.instance.currentUser!.uid,
+                  productId: widget.productData['productId'],
+                  productName: widget.productData['productName'],
+
+
+                );
+              }));
+            },
             icon: Icon(
               Icons.chat_bubble,
               color: const Color.fromARGB(180, 243, 97, 19),
