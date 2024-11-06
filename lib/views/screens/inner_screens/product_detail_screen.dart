@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shoutout_shop_app/provider/cart_provider.dart';
 import 'package:shoutout_shop_app/provider/selected_size_provider.dart';
 import 'package:shoutout_shop_app/views/screens/inner_screens/chat_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final dynamic productData;
@@ -17,6 +18,19 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
 
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   int _imageIndex = 0;
+
+  void callvendor (String phoneNumber)async{
+    final String url = "tel:$phoneNumber";
+    if(await canLaunchUrl(Uri.parse(url))){
+      await launchUrl(Uri.parse(url));
+
+    }else{
+      throw ('Không gọi được');
+    }
+
+    
+
+  }
   @override
   Widget build(BuildContext context) {
     final selectedSize = ref.watch(selectedSizeProvider);
@@ -274,7 +288,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              callvendor(widget.productData['phoneNumber']);
+            },
             icon: Icon(
               Icons.phone,
               color: const Color.fromARGB(180, 243, 97, 19),
