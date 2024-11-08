@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoutout_shop_app/views/screens/auth/login_screen.dart';
 import 'package:shoutout_shop_app/views/screens/inner_screens/customer_order_screen.dart';
+import 'package:shoutout_shop_app/views/screens/inner_screens/edit_profile_screen.dart';
 
 class AccountScreen extends StatelessWidget {
    final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -86,6 +87,10 @@ class AccountScreen extends StatelessWidget {
              child: Container(
               width: 200,
                child: ElevatedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return EditProfileScreen();
+
+                }));
                
                }, child: Text('Chỉnh sửa thông tin'),
                ),
