@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> _productReviewsStream = FirebaseFirestore
+        .instance
+        .collection('productReviews')
+        .where('productId', isEqualTo: widget.productData['productId'])
+        .snapshots();
+
     final selectedSize = ref.watch(selectedSizeProvider);
     final _cartProvider = ref.read(cartProvider.notifier);
     final cartItem = ref.watch(cartProvider);
@@ -250,8 +257,59 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               counterTwoStars: 1,
               counterOneStars: 1,
             ),
-            
-            SizedBox(height: 80,)
+            SizedBox(height: 10,),
+            StreamBuilder<QuerySnapshot>(
+              stream: _productReviewsStream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: Text("Đang tải đánh giá"));
+                }
+
+                return Container(
+                  height: 50,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.size,
+                      itemBuilder: (context, index) {
+                        final reviewData = snapshot.data!.docs[index];
+                        return Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                reviewData['buyerPhoto'],
+                              ),
+                            ),
+                            Text(
+                              reviewData['fullName'],
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              reviewData['review'],
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        );
+                      }),
+                );
+              },
+            ),
+            SizedBox(
+              height: 80,
+            )
           ],
         ),
       ),

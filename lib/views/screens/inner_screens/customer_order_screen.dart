@@ -377,7 +377,7 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                                                               'review': review,
                                                               'email':
                                                                   data['email'],
-                                                              
+                                                              'buyerPhoto': data['profileImages']
                                                                   
                                                             }).whenComplete(() {
                                                               updateProductRating(productId);
