@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rating_summary/rating_summary.dart';
 import 'package:shoutout_shop_app/provider/cart_provider.dart';
 import 'package:shoutout_shop_app/provider/selected_size_provider.dart';
 import 'package:shoutout_shop_app/views/screens/inner_screens/chat_screen.dart';
@@ -19,18 +20,15 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   int _imageIndex = 0;
 
-  void callvendor (String phoneNumber)async{
+  void callvendor(String phoneNumber) async {
     final String url = "tel:$phoneNumber";
-    if(await canLaunchUrl(Uri.parse(url))){
+    if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
-
-    }else{
+    } else {
       throw ('Không gọi được');
     }
-
-    
-
   }
+
   @override
   Widget build(BuildContext context) {
     final selectedSize = ref.watch(selectedSizeProvider);
@@ -122,6 +120,28 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       color: Colors.pink,
                     ),
                   ),
+                  widget.productData['rating'] == 0
+                      ? Text('')
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              Text(
+                                widget.productData['rating'].toString(),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                  "(${widget.productData['totalReviews']} Reviews)"),
+                            ],
+                          ),
+                        ),
                   SizedBox(
                     height: 10,
                   ),
@@ -220,6 +240,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 ],
               ),
             ),
+            RatingSummary(
+              counter: widget.productData['totalReviews'],
+              average: (widget.productData['rating'] as num).toDouble(),
+              showAverage: true,
+              counterFiveStars: 5,
+              counterFourStars: 4,
+              counterThreeStars: 2,
+              counterTwoStars: 1,
+              counterOneStars: 1,
+            ),
+            
+            SizedBox(height: 80,)
           ],
         ),
       ),
@@ -271,14 +303,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return ChatScreen(
                   sellerId: widget.productData['vendorId'],
                   buyerId: FirebaseAuth.instance.currentUser!.uid,
                   productId: widget.productData['productId'],
                   productName: widget.productData['productName'],
-
-
                 );
               }));
             },

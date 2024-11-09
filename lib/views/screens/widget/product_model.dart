@@ -89,6 +89,21 @@ class _ProductModelState extends ConsumerState<ProductModel> {
                             + " \VND",
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 240, 27, 12))
                       ),
+                      widget.prouctData['rating'] == 0
+                      ? SizedBox()
+                      :Row(
+                        children: [
+                          Icon(Icons.star, color: Colors.amber,
+                          size: 14,),
+                          Text(
+                            widget.prouctData['rating'].toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ))
                 ],

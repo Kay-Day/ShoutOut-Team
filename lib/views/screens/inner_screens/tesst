@@ -1,0 +1,17 @@
+     Future<void> updateProductRating(String productId) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('productReviews')
+        .where('productId', isEqualTo: productId)
+        .get();
+    double totalrating = 0;
+    int totalReviews = querySnapshot.docs.length;
+    for(final doc in querySnapshot.docs){
+      totalrating += doc['rating'];
+    }
+    final double averageRating = totalReviews > 0? totalrating/ totalReviews : 0;
+
+    await FirebaseFirestore.instance.collection('products').doc(productId).update({
+      "rating" : averageRating,
+      'tototalReviews': totalReviews,
+    });
+  }
